@@ -1,0 +1,21 @@
+{
+  "name": "angioc",
+  "version": "0.0.0",
+  "authors": [
+    "Pierre GILLON <gillon.pierre69@gmail.com>"
+  ],
+  "description": "A simple ioc inspired by angular",
+  "main": "./dist/angioc.min.js",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "keywords": [
+    "angular",
+    "ioc",
+    "dependency",
+    "injection",
+    "module"
+  ],
+  "license": "MIT"
+}
