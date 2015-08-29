@@ -34,7 +34,9 @@
         };
 
         self.asConstant = function(){
-
+            var spec = new ConstantSpecification(body);
+            callback(spec);
+            return spec;
         };
     }
 
@@ -69,6 +71,13 @@
         }
     }
 
+    function ConstantSpecification(constant){
+        var self = this;
+
+        self.getInstance = function(){
+            return constant;
+        }
+    }
 
     function injectInstance(factory){
         if (typeof define === 'function' && define.amd) {

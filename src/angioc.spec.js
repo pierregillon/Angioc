@@ -99,5 +99,19 @@
             expect(instance.get).toBeDefined();
             expect(instance.get()).toBe('MyClassMyClass2');
         });
+
+        it('can get constant instance when resolving dependency name.', function(){
+            // Actors
+            var constant = {value: 'hello world'};
+
+            // Actions
+            angioc
+                .register('MyConstant', constant)
+                .asConstant();
+
+            // Asserts
+            var instance = angioc.resolve('MyConstant');
+            expect(instance).toBe(constant);
+        });
     })
 }(window, describe, it));
