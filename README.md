@@ -3,6 +3,16 @@
 A simple library of inversion of control, following the dependency injection pattern. This library is inspired by the 
 angular ioc.
 
+## Install
+
+With npm
+
+    npm install angioc
+
+With bower
+
+    bower install angioc
+
 ## Import
 
 AMD loader	
