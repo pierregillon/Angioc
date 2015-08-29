@@ -28,6 +28,9 @@
         var self = this;
 
         self.asClass = function(){
+            if(typeof body !== 'function'){
+                throw new Error('Cannot register class because "'+ JSON.stringify(body)+'" is not a function.')
+            }
             var spec = new ClassSpecification(body, dependencyResolver);
             callback(spec);
             return spec;

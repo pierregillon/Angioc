@@ -53,6 +53,35 @@
             expect(instance.say).toBeDefined();
         });
 
+        it('cannot register class if value is not a function.', function(){
+            // Actions
+            var process = function(){
+                angioc
+                    .register('MyDependency', {})
+                    .asClass();
+            };
+
+            // Asserts
+            expect(process).toThrowError('Cannot register class because "{}" is not a function.');
+        });
+
+        it('can returns new class instance when resolving dependency name.', function(){
+            // Actors
+            function MyClass(){
+                this.say = function(message){};
+            }
+
+            // Actions
+            angioc
+                .register('MyDependency', MyClass)
+                .asClass();
+
+            // Asserts
+            var instance1 = angioc.resolve('MyDependency');
+            var instance2 = angioc.resolve('MyDependency');
+            expect(instance1).not.toBe(instance2);
+        });
+
         it('returns same class instance when resolving singleton dependency name.', function(){
             // Actors
             function MyClass(){
