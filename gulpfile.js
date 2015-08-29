@@ -19,4 +19,15 @@
         return server.start();
     });
 
+    gulp.task('test-example', function (callback) {
+        var server = new karma.Server({
+            configFile: __dirname + '/karma.conf.js',
+            files: [
+                './src/angioc.js',
+                './src/example/**/*.js'
+            ]
+        }, callback);
+        return server.start();
+    });
+
 }(require));

@@ -1,9 +1,11 @@
 (function(){
     'use strict';
+
     function Angioc(){
         var self = this;
         var registry = {};
 
+        // ----- Public methods
         self.register = function(name, body){
             if(typeof name !== 'string' || !name){
                 throw new Error('Unable to register element : the first argument should be a dependency name.');
@@ -11,17 +13,59 @@
             if(!body){
                 throw new Error('Unable to register element : the second argument should be defined.');
             }
-            return new SpecificationFactory(body, self.resolve, function(spec){
+            return new SpecificationFactory(body, getInstance, function(spec){
                 registry[name] = spec;
             });
         };
+        self.resolve = function(param1, param2){
+            if(Array.isArray(param1) && typeof param2 === 'function'){
+                resolveWithParameterNames(param1, param2);
+            }
+            else if(typeof param1 === 'function'){
+                resolveWithoutParameterNames(param1);
+            }
+            else {
+                throw new Error('Bad parameters to resolve dependencies.');
+            }
+        };
+        self.inject = function(param1, param2){
+            return function(){
+                self.resolve(param1, param2);
+            }
+        };
 
-        self.resolve = function(name){
+        // ----- Internal logic
+        function getInstance(name){
             if(registry.hasOwnProperty(name) === false){
-                throw new Error();
+                throw new Error('The dependency "'+ name +'" was not found.');
             }
             return registry[name].getInstance();
-        };
+        }
+        function resolveWithParameterNames(dependencyNames, action){
+            var dependencies = [];
+            dependencyNames.forEach(function(dependencyName){
+                dependencies.push(getInstance(dependencyName));
+            });
+            action.apply(this, dependencies);
+        }
+        function resolveWithoutParameterNames(action){
+            var dependencyNames = getParameterNames(action);
+            resolveWithParameterNames(dependencyNames, action);
+        }
+
+        var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+        var ARGUMENT_NAMES = /([^\s,]+)/g;
+        function getParameterNames(func) {
+            var fnStr = func.toString().replace(STRIP_COMMENTS, '');
+            var result = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
+            if(result === null)
+                result = [];
+            var final = [];
+            result.forEach(function(item){
+                final.push(item.split('_').join(''));
+            });
+            return final;
+        }
     }
 
     function SpecificationFactory(body, dependencyResolver, callback){
@@ -58,10 +102,12 @@
 
         self.withDependencies = function(names){
             dependencyNames = names;
+            return self;
         };
 
         self.asSingleton = function(){
             isSingleton = true;
+            return self;
         };
 
         function createInstance(){
