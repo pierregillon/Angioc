@@ -187,6 +187,20 @@
                     expect(MyConstant).toBe(constant);
                 })();
             });
+            it('definitions', function(){
+                // Actors
+                function MyClass(){}
+
+                // Actions
+                angioc
+                    .register('test', MyClass)
+                    .asClass();
+
+                // Asserts
+                angioc.definition(function(test){
+                    expect(test).toBe(MyClass);
+                })();
+            });
         });
     });
 }(window, describe, it));

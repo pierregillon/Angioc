@@ -28,10 +28,20 @@
                 throw new Error('Bad parameters to resolve dependencies.');
             }
         };
-        self.inject = function(param1, param2){
+        self.inject = function(callback){
             return function(){
-                self.resolve(param1, param2);
-            }
+                self.resolve(callback);
+            };
+        };
+        self.definition = function(callback){
+            return function(){
+                var dependencyNames = getParameterNames(callback);
+                var definitions = [];
+                dependencyNames.forEach(function(dependencyName){
+                    definitions.push(getDefinition(dependencyName));
+                });
+                callback.apply(this, definitions);
+            };
         };
 
         // ----- Internal logic
@@ -40,6 +50,12 @@
                 throw new Error('The dependency "'+ name +'" was not found.');
             }
             return registry[name].getInstance();
+        }
+        function getDefinition(name){
+            if(registry.hasOwnProperty(name) === false){
+                throw new Error('The dependency "'+ name +'" was not found.');
+            }
+            return registry[name].getDefinition();
         }
         function resolveWithParameterNames(dependencyNames, action){
             var dependencies = [];
@@ -99,12 +115,13 @@
             }
             return instance;
         };
-
+        self.getDefinition = function(){
+            return constructor;
+        };
         self.withDependencies = function(names){
             dependencyNames = names;
             return self;
         };
-
         self.asSingleton = function(){
             isSingleton = true;
             return self;
