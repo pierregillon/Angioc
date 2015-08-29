@@ -1,4 +1,4 @@
-(function(angioc){
+(function (angioc) {
     'use strict';
 
     angioc
@@ -6,10 +6,10 @@
         .asClass()
         .asSingleton();
 
-    function PurchaseDataService(){
+    function PurchaseDataService() {
         var self = this;
 
-        self.getPurchases = function(){
+        self.getPurchases = function () {
             return [
                 {id: 1, customerId: 1, name: 'Computer', price: '1200'},
                 {id: 2, customerId: 1, name: 'Shoes', price: '200'},

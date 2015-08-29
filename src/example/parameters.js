@@ -1,8 +1,8 @@
-(function(angioc){
+(function (angioc) {
     'use strict';
 
     var parameters = {
-        customerCount : 5
+        customerCount: 5
     };
 
     angioc

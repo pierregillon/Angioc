@@ -1,14 +1,14 @@
-(function(window, describe, it){
+(function (window, describe, it) {
     'use strict';
 
-    describe('Angioc', function(){
-        it('should be injected in the window by default.', function(){
+    describe('Angioc', function () {
+        it('should be injected in the window by default.', function () {
             expect(window.angioc).toBeDefined();
         });
 
-        it('cannot register class if value is not a function.', function(){
+        it('cannot register class if value is not a function.', function () {
             // Actions
-            var process = function(){
+            var process = function () {
                 angioc
                     .register('MyDependency', {})
                     .asClass();
@@ -18,28 +18,29 @@
             expect(process).toThrowError('Cannot register class because "{}" is not a function.');
         });
 
-        describe('cannot register an element', function(){
-            it('with empty dependency name.', function() {
+        describe('cannot register an element', function () {
+            it('with empty dependency name.', function () {
                 // Actions
-                var process = (function(){
+                var process = (function () {
                     angioc.register(undefined, 'x');
                 });
 
                 // Asserts
                 expect(process).toThrowError('Unable to register element : the first argument should be a dependency name.');
             });
-            it('without dependency name.', function(){
+            it('without dependency name.', function () {
                 // Actions
-                var process = (function(){
-                    angioc.register(function(){});
+                var process = (function () {
+                    angioc.register(function () {
+                    });
                 });
 
                 // Asserts
                 expect(process).toThrowError('Unable to register element : the first argument should be a dependency name.');
             });
-            it('without value.', function(){
+            it('without value.', function () {
                 // Actions
-                var process = (function(){
+                var process = (function () {
                     angioc.register('myDependency', undefined);
                 });
 
@@ -48,11 +49,12 @@
             });
         });
 
-        describe('can resolve', function(){
-            it('class instance.', function(){
+        describe('can resolve', function () {
+            it('class instance.', function () {
                 // Actors
-                function MyClass(){
-                    this.say = function(message){};
+                function MyClass() {
+                    this.say = function (message) {
+                    };
                 }
 
                 // Actions
@@ -61,15 +63,16 @@
                     .asClass();
 
                 // Asserts
-                angioc.resolve(['MyDependency'], function(instance){
+                angioc.resolve(['MyDependency'], function (instance) {
                     expect(instance).toBeDefined();
                     expect(instance.say).toBeDefined();
                 });
             });
-            it('class instance inject different instances.', function(){
+            it('class instance inject different instances.', function () {
                 // Actors
-                function MyClass(){
-                    this.say = function(message){};
+                function MyClass() {
+                    this.say = function (message) {
+                    };
                 }
 
                 // Actions
@@ -78,14 +81,15 @@
                     .asClass();
 
                 // Asserts
-                angioc.resolve(['MyDependency', 'MyDependency'], function(instance1, instance2){
+                angioc.resolve(['MyDependency', 'MyDependency'], function (instance1, instance2) {
                     expect(instance1).not.toBe(instance2);
                 });
             });
-            it('singleton class instance.', function(){
+            it('singleton class instance.', function () {
                 // Actors
-                function MyClass(){
-                    this.say = function(message){};
+                function MyClass() {
+                    this.say = function (message) {
+                    };
                 }
 
                 // Actions
@@ -95,19 +99,20 @@
                     .asSingleton();
 
                 // Asserts
-                angioc.resolve(['MyDependency', 'MyDependency'], function(instance1, instance2){
+                angioc.resolve(['MyDependency', 'MyDependency'], function (instance1, instance2) {
                     expect(instance1).toBe(instance2);
                 });
             });
-            it('class instance with dependencies.', function(){
+            it('class instance with dependencies.', function () {
                 // Actors
-                function MyClass(myClass2){
-                    this.get = function(){
+                function MyClass(myClass2) {
+                    this.get = function () {
                         return 'MyClass' + myClass2.get();
                     };
                 }
-                function MyClass2(){
-                    this.get = function(){
+
+                function MyClass2() {
+                    this.get = function () {
                         return 'MyClass2';
                     };
                 }
@@ -122,13 +127,13 @@
                     .withDependencies(['MyClass2']);
 
                 // Asserts
-                angioc.resolve(['MyClass'], function(instance) {
+                angioc.resolve(['MyClass'], function (instance) {
                     expect(instance).toBeDefined();
                     expect(instance.get).toBeDefined();
                     expect(instance.get()).toBe('MyClassMyClass2');
                 });
             });
-            it('constant.', function(){
+            it('constant.', function () {
                 // Actors
                 var constant = {value: 'hello world'};
 
@@ -138,11 +143,11 @@
                     .asConstant();
 
                 // Asserts
-                angioc.resolve(['MyConstant'], function(instance){
+                angioc.resolve(['MyConstant'], function (instance) {
                     expect(instance).toBe(constant);
                 });
             });
-            it('dependencies without naming them.', function(){
+            it('dependencies without naming them.', function () {
                 // Actors
                 var constant = {value: 'hello world'};
 
@@ -152,11 +157,11 @@
                     .asConstant();
 
                 // Asserts
-                angioc.resolve(function(MyConstant){
+                angioc.resolve(function (MyConstant) {
                     expect(MyConstant).toBe(constant);
                 });
             });
-            it('dependencies without naming them and with _.', function(){
+            it('dependencies without naming them and with _.', function () {
                 // Actors
                 var constant = {value: 'hello world'};
 
@@ -166,14 +171,14 @@
                     .asConstant();
 
                 // Asserts
-                angioc.resolve(function(_MyConstant_){
+                angioc.resolve(function (_MyConstant_) {
                     expect(_MyConstant_).toBe(constant);
                 });
             });
         });
 
-        describe('can inject', function(){
-            it('dependencies', function(){
+        describe('can inject', function () {
+            it('dependencies', function () {
                 // Actors
                 var constant = {value: 'hello world'};
 
@@ -183,11 +188,11 @@
                     .asConstant();
 
                 // Asserts
-                angioc.inject(function(MyConstant){
+                angioc.inject(function (MyConstant) {
                     expect(MyConstant).toBe(constant);
                 })();
             });
-            it('dependencies with _', function(){
+            it('dependencies with _', function () {
                 // Actors
                 var constant = {value: 'hello world'};
 
@@ -197,13 +202,14 @@
                     .asConstant();
 
                 // Asserts
-                angioc.inject(function(_MyConstant_){
+                angioc.inject(function (_MyConstant_) {
                     expect(_MyConstant_).toBe(constant);
                 })();
             });
-            it('definitions', function(){
+            it('definitions', function () {
                 // Actors
-                function MyClass(){}
+                function MyClass() {
+                }
 
                 // Actions
                 angioc
@@ -211,13 +217,14 @@
                     .asClass();
 
                 // Asserts
-                angioc.definition(function(test){
+                angioc.definition(function (test) {
                     expect(test).toBe(MyClass);
                 })();
             });
-            it('definitions with _', function(){
+            it('definitions with _', function () {
                 // Actors
-                function MyClass(){}
+                function MyClass() {
+                }
 
                 // Actions
                 angioc
@@ -225,13 +232,13 @@
                     .asClass();
 
                 // Asserts
-                angioc.definition(function(_test_){
+                angioc.definition(function (_test_) {
                     expect(_test_).toBe(MyClass);
                 })();
             });
         });
-        
-        it('cannot get definition of constant.', function(){
+
+        it('cannot get definition of constant.', function () {
             // Actors
             var constant = {};
 
@@ -241,7 +248,8 @@
                 .asConstant();
 
             // Asserts
-            expect(angioc.definition(function(test){})).toThrowError('A constant has no definition.');
+            expect(angioc.definition(function (test) {
+            })).toThrowError('A constant has no definition.');
         });
     });
 }(window, describe, it));

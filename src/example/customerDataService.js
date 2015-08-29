@@ -1,4 +1,4 @@
-(function(angioc){
+(function (angioc) {
     'use strict';
 
     angioc
@@ -6,10 +6,10 @@
         .asClass()
         .asSingleton();
 
-    function CustomerDataService(){
+    function CustomerDataService() {
         var self = this;
 
-        self.getCustomers = function(){
+        self.getCustomers = function () {
             return [
                 {id: 1, name: 'Philip JANES'},
                 {id: 2, name: 'Philip JANES'}
