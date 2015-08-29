@@ -143,6 +143,9 @@
     function ConstantSpecification(constant) {
         var self = this;
 
+        self.getDefinition = function(){
+            throw new Error('A constant has no definition.');
+        };
         self.getInstance = function () {
             return constant;
         }

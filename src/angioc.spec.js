@@ -187,6 +187,20 @@
                     expect(MyConstant).toBe(constant);
                 })();
             });
+            it('dependencies with _', function(){
+                // Actors
+                var constant = {value: 'hello world'};
+
+                // Actions
+                angioc
+                    .register('MyConstant', constant)
+                    .asConstant();
+
+                // Asserts
+                angioc.inject(function(_MyConstant_){
+                    expect(_MyConstant_).toBe(constant);
+                })();
+            });
             it('definitions', function(){
                 // Actors
                 function MyClass(){}
@@ -201,6 +215,33 @@
                     expect(test).toBe(MyClass);
                 })();
             });
+            it('definitions with _', function(){
+                // Actors
+                function MyClass(){}
+
+                // Actions
+                angioc
+                    .register('test', MyClass)
+                    .asClass();
+
+                // Asserts
+                angioc.definition(function(_test_){
+                    expect(_test_).toBe(MyClass);
+                })();
+            });
+        });
+        
+        it('cannot get definition of constant.', function(){
+            // Actors
+            var constant = {};
+
+            // Actions
+            angioc
+                .register('test', constant)
+                .asConstant();
+
+            // Asserts
+            expect(angioc.definition(function(test){})).toThrowError('A constant has no definition.');
         });
     });
 }(window, describe, it));
