@@ -13,6 +13,9 @@
             if (!body) {
                 throw new Error('Unable to register element : the second argument should be defined.');
             }
+            if (registry.hasOwnProperty(name)) {
+                throw new Error('Cannot register the component "' + name + '", it has already been registered.');
+            }
             return new SpecificationFactory(body, getInstance, function (spec) {
                 registry[name] = spec;
             });

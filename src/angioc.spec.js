@@ -50,6 +50,33 @@
             // Asserts
             expect(process).toThrowError('Cannot register class because "{}" is not a function.');
         });
+        it('cannot register a constant twice.', function () {
+            // Actions
+            var process = function () {
+                angioc.register('MyDependency', {}).asConstant();
+                angioc.register('MyDependency', {}).asConstant();
+            };
+
+            // Asserts
+            expect(process).toThrowError('Cannot register the component "MyDependency", it has already been registered.');
+        });
+        it('cannot register a class twice.', function () {
+            // Actors
+            function MyClass() {
+                this.say = function (message) {
+                };
+            }
+
+            // Actions
+            var process = function () {
+                angioc.register('MyClass', MyClass).asClass();
+                angioc.register('MyClass', MyClass).asClass();
+            };
+
+            // Asserts
+            expect(process).toThrowError('Cannot register the component "MyClass", it has already been registered.');
+        });
+
         describe('can resolve', function () {
             it('class instance.', function () {
                 // Actors
