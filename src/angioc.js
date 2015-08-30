@@ -43,6 +43,7 @@
                 callback.apply(this, definitions);
             };
         };
+        self.constructor = Angioc;
 
         // ----- Internal logic
         function getInstance(name) {
@@ -143,7 +144,7 @@
     function ConstantSpecification(constant) {
         var self = this;
 
-        self.getDefinition = function(){
+        self.getDefinition = function () {
             throw new Error('A constant has no definition.');
         };
         self.getInstance = function () {

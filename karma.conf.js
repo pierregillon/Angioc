@@ -12,10 +12,7 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
 
     // list of files / patterns to load in the browser
-    files: [
-        './src/angioc.spec.js',
-        './src/angioc.js'
-    ],
+    files: [],
 
     // list of files to exclude
     exclude: [
@@ -50,6 +47,6 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false
+    singleRun: true
   })
 };

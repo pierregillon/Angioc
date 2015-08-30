@@ -1,21 +1,11 @@
-(function (window, describe, it) {
+(function (window, describe, it, Angioc) {
     'use strict';
 
     describe('Angioc', function () {
-        it('should be injected in the window by default.', function () {
-            expect(window.angioc).toBeDefined();
-        });
+        var angioc;
 
-        it('cannot register class if value is not a function.', function () {
-            // Actions
-            var process = function () {
-                angioc
-                    .register('MyDependency', {})
-                    .asClass();
-            };
-
-            // Asserts
-            expect(process).toThrowError('Cannot register class because "{}" is not a function.');
+        beforeEach(function(){
+            angioc = new Angioc();
         });
 
         describe('cannot register an element', function () {
@@ -49,6 +39,17 @@
             });
         });
 
+        it('cannot register class if value is not a function.', function () {
+            // Actions
+            var process = function () {
+                angioc
+                    .register('MyDependency', {})
+                    .asClass();
+            };
+
+            // Asserts
+            expect(process).toThrowError('Cannot register class because "{}" is not a function.');
+        });
         describe('can resolve', function () {
             it('class instance.', function () {
                 // Actors
@@ -252,4 +253,5 @@
             })).toThrowError('A constant has no definition.');
         });
     });
-}(window, describe, it));
+
+}(window, describe, it, angioc.constructor));
