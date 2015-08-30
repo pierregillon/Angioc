@@ -33,16 +33,6 @@
         return server.start();
     });
 
-    gulp.task('build', function () {
-        return gulp
-            .src('./src/angioc.js')
-            .pipe(uglify())
-            .pipe(rename({
-                extname: '.min.js'
-            }))
-            .pipe(gulp.dest('./dist/'))
-    });
-
     // ----- Internal logic
     function startKarmaServer(singleRun, callback){
         var server = new karma.Server({

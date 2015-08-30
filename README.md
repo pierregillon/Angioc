@@ -151,7 +151,3 @@ Run example tests
 
     gulp test-example
     
-Build the angioc.min.js in dist folder
-
-    gulp build
-    
