@@ -279,6 +279,15 @@
             expect(angioc.definition(function (test) {
             })).toThrowError('A constant has no definition.');
         });
+
+        it('can access to $provide.', function () {
+            angioc.resolve(['$provide'], function($provide){
+                expect($provide).toBeDefined();
+                expect($provide.replaceDependencyNameByConstant).toBeDefined();
+                expect($provide.getDefinition).toBeDefined();
+            });
+        });
+
     });
 
 }(window, describe, it, angioc.constructor));

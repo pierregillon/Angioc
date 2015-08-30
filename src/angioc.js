@@ -89,6 +89,14 @@
             });
             return final;
         }
+
+        // ----- Add $provide
+        self.register('$provide', {
+            replaceDependencyNameByConstant : function(name, value){
+                registry[name] = new ConstantSpecification(value);
+            },
+            getDefinition : getDefinition
+        }).asConstant();
     }
 
     function SpecificationFactory(body, dependencyResolver, callback) {
