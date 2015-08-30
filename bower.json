@@ -15,10 +15,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/pierregillon/Angioc.git"
+    "url": "git://github.com/pierregillon/angioc.git"
   },
   "license": "MIT",
-  "homepage": "https://github.com/pierregillon/Angioc",
+  "homepage": "https://github.com/pierregillon/angioc",
   "ignore": [
     "**/.*",
     "node_modules",
