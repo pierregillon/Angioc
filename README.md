@@ -78,64 +78,28 @@ Register a constant.
     
 ### Resolve dependencies
 
-Resolve dependency names and inject them in the passed function.
+Resolve dependency names and inject them in the given function.
 
-    angioc.resolve(['MyClass', 'MyConstant'], function (classInstance, constant) {
+    angioc.resolve(['customerController', 'parameters'], function (controller, myConstantParameters) {
         // ...
     });
 
 Angioc does not inject the class definition but a class instance, following the specified configuration at registering.
 
-You are not forced to define dependency names, they will be resolved by reflection. 
-
-    angioc.resolve(function (MyClass, MyConstant) {
-        // ...
-    });
-    
-However, in your production code, it is better to do it because your code can be minified. In that case, parameter names 
-are changed to single letter and Angioc won't succeeded to resolve them.
-
 ### Inject dependencies for better testing
 
-Angioc provides features to help you testing your application.
-If you are using Jasmine or Mocha, you can use the 'inject' function to get dependencies from Angioc.
+To help you testing your application that is using angioc, you can install angioc-mocks. It helps you inject dependencies
+in a beforeEach() (mocha, jasmine) and replace injected member by mock objects.
 
-    describe('A customer controller', function () {
-        beforeEach(angioc.inject(function (customerController, parameters) {
-            // ...
-        }));
-    });
- 
-You can surround parameter name by '_' to easy initialize test variables.
+With bower
 
-    describe('A customer controller', function () {
-        var customerController;
-        var parameters;
+    bower install angioc-mocks --save-dev
+    
+Or npm
 
-        beforeEach(angioc.inject(function (_customerController_, _parameters_) {
-            customerController = _customerController_;
-            parameters = _parameters_;
-        }));
-    });
+    npm install angioc-mocks --save-dev
 
-### Inject class definition for better testing
-
-If you are using Jasmine or Mocha, you can use the 'definition' function to get the original function. This let you instanciate
-you class by the hand, and to provide mocks to constructor if needed.
-
-    describe('A customer controller', function () {
-        beforeEach(angioc.definition(function (customerController) {
-            _customerController = new customerController(customerServiceMock, parametersMock);
-        }));
-    });
-  
-You can surround parameter name by '_' to easy initialize test variables.
-
-    describe('A customer controller', function () {
-        beforeEach(angioc.definition(function (_customerController_) {
-            customerController = new _customerController_(customerServiceMock, parametersMock);
-        }));
-    });
+Repo : https://github.com/pierregillon/angioc-mocks
 
 ## How to develop
 
