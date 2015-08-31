@@ -175,20 +175,6 @@
                     expect(instance).toBe(constant);
                 });
             });
-            it('dependencies without naming them.', function () {
-                // Actors
-                var constant = {value: 'hello world'};
-
-                // Actions
-                angioc
-                    .register('MyConstant', constant)
-                    .asConstant();
-
-                // Asserts
-                angioc.resolve(function (MyConstant) {
-                    expect(MyConstant).toBe(constant);
-                });
-            });
         });
 
         it('can access to $provide.', function () {

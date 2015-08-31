@@ -20,15 +20,16 @@
                 registry[name] = spec;
             });
         };
-        self.resolve = function (param1, param2) {
-            if (Array.isArray(param1) && typeof param2 === 'function') {
-                resolveWithParameterNames(param1, param2);
-            }
-            else if (typeof param1 === 'function') {
-                resolveWithoutParameterNames(param1);
+        self.resolve = function (dependencyNames, action) {
+            if (Array.isArray(dependencyNames) === false || typeof action !== 'function') {
+                throw new Error('Bad parameters to resolve dependencies.');
             }
             else {
-                throw new Error('Bad parameters to resolve dependencies.');
+                var dependencies = [];
+                dependencyNames.forEach(function (dependencyName) {
+                    dependencies.push(getInstance(dependencyName));
+                });
+                action.apply(this, dependencies);
             }
         };
         self.constructor = Angioc;
@@ -40,35 +41,11 @@
             }
             return registry[name].getInstance();
         }
-
         function getDefinition(name) {
             if (registry.hasOwnProperty(name) === false) {
                 throw new Error('The dependency "' + name + '" was not found.');
             }
             return registry[name].getDefinition();
-        }
-
-        function resolveWithParameterNames(dependencyNames, action) {
-            var dependencies = [];
-            dependencyNames.forEach(function (dependencyName) {
-                dependencies.push(getInstance(dependencyName));
-            });
-            action.apply(this, dependencies);
-        }
-
-        function resolveWithoutParameterNames(action) {
-            var dependencyNames = getParameterNames(action);
-            resolveWithParameterNames(dependencyNames, action);
-        }
-
-        var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
-        var ARGUMENT_NAMES = /([^\s,]+)/g;
-        function getParameterNames(func) {
-            var fnStr = func.toString().replace(STRIP_COMMENTS, '');
-            var result = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
-            if (result === null)
-                result = [];
-            return result;
         }
 
         // ----- Add $provide
