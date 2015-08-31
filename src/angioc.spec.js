@@ -189,95 +189,6 @@
                     expect(MyConstant).toBe(constant);
                 });
             });
-            it('dependencies without naming them and with _.', function () {
-                // Actors
-                var constant = {value: 'hello world'};
-
-                // Actions
-                angioc
-                    .register('MyConstant', constant)
-                    .asConstant();
-
-                // Asserts
-                angioc.resolve(function (_MyConstant_) {
-                    expect(_MyConstant_).toBe(constant);
-                });
-            });
-        });
-
-        describe('can inject', function () {
-            it('dependencies', function () {
-                // Actors
-                var constant = {value: 'hello world'};
-
-                // Actions
-                angioc
-                    .register('MyConstant', constant)
-                    .asConstant();
-
-                // Asserts
-                angioc.inject(function (MyConstant) {
-                    expect(MyConstant).toBe(constant);
-                })();
-            });
-            it('dependencies with _', function () {
-                // Actors
-                var constant = {value: 'hello world'};
-
-                // Actions
-                angioc
-                    .register('MyConstant', constant)
-                    .asConstant();
-
-                // Asserts
-                angioc.inject(function (_MyConstant_) {
-                    expect(_MyConstant_).toBe(constant);
-                })();
-            });
-            it('definitions', function () {
-                // Actors
-                function MyClass() {
-                }
-
-                // Actions
-                angioc
-                    .register('test', MyClass)
-                    .asClass();
-
-                // Asserts
-                angioc.definition(function (test) {
-                    expect(test).toBe(MyClass);
-                })();
-            });
-            it('definitions with _', function () {
-                // Actors
-                function MyClass() {
-                }
-
-                // Actions
-                angioc
-                    .register('test', MyClass)
-                    .asClass();
-
-                // Asserts
-                angioc.definition(function (_test_) {
-                    expect(_test_).toBe(MyClass);
-                })();
-            });
-        });
-
-        it('cannot get definition of constant.', function () {
-            // Actors
-            var constant = {};
-
-            // Actions
-            angioc
-                .register('test', constant)
-                .asConstant();
-
-            // Asserts
-            expect(angioc.definition(function (test) {
-            })).toThrowError('A constant has no definition.');
         });
 
         it('can access to $provide.', function () {
@@ -286,6 +197,14 @@
                 expect($provide.replaceDependencyNameByConstant).toBeDefined();
                 expect($provide.getDefinition).toBeDefined();
             });
+        });
+
+        it('cannot access to $mock in production code.', function () {
+            // Actors
+            var process = function(){angioc.resolve(['$mock'], function($mock){});};
+
+            // Asserts
+            expect(process).toThrowError('The dependency "$mock" was not found.');
         });
 
     });

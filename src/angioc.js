@@ -31,21 +31,6 @@
                 throw new Error('Bad parameters to resolve dependencies.');
             }
         };
-        self.inject = function (callback) {
-            return function () {
-                self.resolve(callback);
-            };
-        };
-        self.definition = function (callback) {
-            return function () {
-                var dependencyNames = getParameterNames(callback);
-                var definitions = [];
-                dependencyNames.forEach(function (dependencyName) {
-                    definitions.push(getDefinition(dependencyName));
-                });
-                callback.apply(this, definitions);
-            };
-        };
         self.constructor = Angioc;
 
         // ----- Internal logic
@@ -83,11 +68,7 @@
             var result = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
             if (result === null)
                 result = [];
-            var final = [];
-            result.forEach(function (item) {
-                final.push(item.split('_').join(''));
-            });
-            return final;
+            return result;
         }
 
         // ----- Add $provide

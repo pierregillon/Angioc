@@ -2,7 +2,7 @@
     'use strict';
 
     var expect = require('chai').expect;
-    var angioc = require('../dist/angioc.min');
+    var angioc = require('./angioc.js');
 
     describe('Angioc', function(){
         it('should be well imported with require statement.', function(){
