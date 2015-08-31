@@ -22,17 +22,6 @@
     gulp.task('test', ['test-node', 'test-web']);
     gulp.task('test-dev', ['test-web-dev']);
 
-    gulp.task('test-example', function (callback) {
-        var server = new karma.Server({
-            configFile: __dirname + '/karma.conf.js',
-            files: [
-                './src/angioc.js',
-                './example/**/*.js'
-            ]
-        }, callback);
-        return server.start();
-    });
-
     // ----- Internal logic
     function startKarmaServer(singleRun, callback){
         var server = new karma.Server({

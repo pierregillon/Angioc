@@ -110,8 +110,5 @@ Run unit test
 Run unit tests in continuous mode
 
     gulp test-dev
-    
-Run example tests
 
-    gulp test-example
     
